@@ -3,11 +3,19 @@
 {% block content %}
 
 <div class="mt-3 text-center">
+    
     {% if request.user.is_authenticated %}
+        {% if profile and profile.role == "general manager" %}
+            <h1>Content</h1>
+        {% else %}
+            <div class="mt-5">
+                <h1 class="text-danger">You don't have access this page!</h1>
+            </div>
+        {% endif %}
     {% else %}
-    <div class="mt-5">
-        <h1 class="text-danger">You must be logged in to access this page!</h1>
-    </div>
+        <div class="mt-5">
+            <h1 class="text-danger">You must be logged in to access this page!</h1>
+        </div>
     {% endif %}
 </div>
 

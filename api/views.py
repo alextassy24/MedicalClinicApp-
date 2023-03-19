@@ -4,27 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Assistant, UserProfile, Patient, Treatment
 
-def home(request):
-    user_role = None
-    user_obj = None
-    
-    if request.user.is_authenticated:
-        try:
-            user_obj = UserProfile.objects.get(user=request.user)
-            user_role = user_obj.role
-        except UserProfile.DoesNotExist:
-            pass
-    
-    context = {}
-    if user_role == 'doctor' or user_role == 'general_manager':
-        context['profile'] = user_obj
-    elif user_role == 'assistant':
-        context['assistant'] = Assistant.objects.get(user=request.user)
-    else:
-        context['guest'] = True
-        
-    return render(request, 'home.html', context)
-
+def home(request): 
+    return render(request, 'home.html')
 
 def login_page(request):
     

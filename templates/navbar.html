@@ -5,14 +5,12 @@
 			{% if request.user.is_authenticated %}
 			<ul class="navbar-nav">
 
-				{% if profile%}
-					{% if profile.role == "general manager" %}
+					{% if profile and profile.role == "general manager" %}
 						<li class="nav-item">
 							<a class="nav-link fw-bold" href="{% url 'doctors' %}">Doctors</a>
 						</li>
 					{% endif %}
-
-					{% if profile.role == "doctor" or "general manager" %}
+					{% if profile.role == "doctor" or "general manager" and profile %}
 						<li class="nav-item">
 							<a class="nav-link fw-bold" href="{% url 'assistants' %}">Assistants</a>
 						</li>
@@ -20,7 +18,6 @@
 							<a class="nav-link fw-bold" href="{% url 'patients' %}">Patients</a>
 						</li>
 					{% endif %}
-				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link fw-bold" href="{% url 'treatments' %}">Treatments</a>
 				</li>
@@ -29,9 +26,9 @@
 				</li>
 
 			</ul>
-		{% else %}
+			{% else %}
 				<a class="btn btn-primary fw-bold" href="{% url 'login' %}">Login</a>
-		{% endif %}
+			{% endif %}
 
 		</div>
 	</div>

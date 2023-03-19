@@ -6,7 +6,7 @@
     
     {% if request.user.is_authenticated %}
         {% if profile.role == "general_manager" or "doctor" and profile %}
-            <h1 class="text-center mt-3 mb-5">Patient {{patient.first_name}}</h1>
+            <h1 class="text-center mt-3 mb-5">Patient {{patient.first_name}} {{patient.last_name}}</h1>
         
            <label for="id" class="form-label">Id</label>
            <input class="form-control mb-3" name="id" type="text" value="{{patient.id}}" aria-label="Disabled input example" disabled readonly>

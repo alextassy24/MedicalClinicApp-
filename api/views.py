@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Assistant, UserProfile, Patient, Treatment
+from .models import Assistant, UserProfile, Patient, Treatment, RoleChoices
+from .forms import AssistantForm, PatientForm, DoctorForm
 
 def home(request): 
     return render(request, 'home.html')
@@ -71,8 +72,65 @@ def view_treatments(request):
     context = {'treatments': treatments}
     return render(request, 'treatments.html', context)
 
-
 def view_treatment(request, pk):
     treatment = Treatment.objects.get(id=pk)
     context = {'treatment': treatment}
     return render(request, 'treatment.html', context)
+
+def doctor_register(request):
+    form = DoctorForm()
+
+    if request.method == 'POST':
+        form = DoctorForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            
+            user_profile = UserProfile(user=user, role= RoleChoices.DOCTOR)
+            user_profile.save()
+            return redirect('doctors')
+        else:
+            messages.error(request, 'An error occurred during registration')
+
+    return render(request, 'doctor_register.html', {'form': form})
+
+def doctor_update(request,pk):
+    pass
+
+def assistant_register(request):
+    form = AssistantForm()
+
+    if request.method == 'POST':
+        form = AssistantForm(request.POST)
+        if form.is_valid():
+            assistant = form.save(commit=False)
+            assistant.username = assistant.username.lower()
+            assistant.save()
+            
+            return redirect('assistants')
+        else:
+            messages.error(request, 'An error occurred during registration')
+
+    return render(request, 'assistant_register.html', {'form': form})
+
+def assistant_update(request,pk):
+    pass
+
+def patient_register(request):
+    form = PatientForm()
+
+    if request.method == 'POST':
+        form = PatientForm(request.POST)
+        if form.is_valid():
+            patient = form.save(commit=False)
+            patient.save()
+            
+            return redirect('patients')
+        else:
+            messages.error(request, 'An error occurred during registration')
+
+    return render(request, 'patient_register.html', {'form': form})
+
+def patient_update(request,pk):
+    pass

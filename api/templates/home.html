@@ -6,7 +6,7 @@
     {% if request.user.is_authenticated %}
         {% if profile.role == 'doctor'%}
             <h1>Welcome dr. {{request.user.username}}</h1>
-        {% elif profile.role == 'general manager'%}
+        {% elif profile.role == 'general_manager'%}
             <h1>Welcome GM {{request.user.username}}</h1>
         {% else %}
             <h1>Welcome {{request.user.username}}</h1>

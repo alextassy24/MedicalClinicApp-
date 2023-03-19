@@ -37,22 +37,42 @@ def logout_page(request):
     return redirect('home')
 
 def view_doctors(request):
-    return render(request, 'doctors.html')
-
+    doctors = UserProfile.objects.filter(role='doctor')
+    context = {'doctors': doctors}
+    return render(request, 'doctors.html', context)
+    
 def view_doctor(request, pk):
-    return render(request, 'doctors.html')
+    doctor = UserProfile.objects.get(user__id=pk, role='doctor')
+    context = {'doctor': doctor}
+    return render(request, 'doctor.html', context)
 
 def view_assistants(request):
-    return render(request, 'assistants.html')
+    assistants = Assistant.objects.all()
+    context = {'assistants': assistants}
+    return render(request, 'assistants.html', context)
 
 def view_assistant(request, pk):
-    return render(request, 'assistants.html')
+    assistant = Assistant.objects.get(id=pk)
+    context = {'assistant': assistant}
+    return render(request, 'assistant.html', context)
 
 def view_patients(request):
-    return render(request, 'patients.html')
+    patients = Patient.objects.all()
+    context = {'patients': patients}
+    return render(request, 'patients.html', context)
 
 def view_patient(request, pk):
-    return render(request, 'patients.html')
+    patient = Patient.objects.get(id=pk)
+    context = {'patient': patient}
+    return render(request, 'patient.html', context)
 
 def view_treatments(request):
-    return render(request, 'treatments.html')
+    treatments = Treatment.objects.all()
+    context = {'treatments': treatments}
+    return render(request, 'treatments.html', context)
+
+
+def view_treatment(request, pk):
+    treatment = Treatment.objects.get(id=pk)
+    context = {'treatment': treatment}
+    return render(request, 'treatment.html', context)

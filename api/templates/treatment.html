@@ -1,0 +1,24 @@
+{% extends 'main.html' %} 
+{% block title %}Treatment{% endblock title %} 
+{% block content %}
+
+<div class="mt-5">
+    
+    {% if request.user.is_authenticated %}
+        <h1 class="text-center mt-3 mb-5">Treatment {{treatment.patient}}</h1>
+        <label for="id" class="form-label">Id</label>
+        <input class="form-control mb-3" name="id" type="text" value="{{treatment.id}}" aria-label="Disabled input example" disabled readonly>
+        <label for="first_name" class="form-label">Patient</label>
+        <input class="form-control mb-3" name="first_name" type="text" value="{{treatment.patient}}" aria-label="Disabled input example" disabled readonly>
+        <label for="last_name" class="form-label">Name</label>
+        <input class="form-control mb-3" name="last_name" type="text" value="{{treatment.name}}" aria-label="Disabled input example" disabled readonly>
+        <label for="email" class="form-label">Description</label>
+        <input class="form-control mb-3s" name="email" type="text" value="{{treatment.description}}" aria-label="Disabled input example" disabled readonly>
+    {% else %}
+        <div class="mt-5">
+            <h1 class="text-danger">You must be logged in to access this page!</h1>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

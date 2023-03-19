@@ -12,6 +12,8 @@ urlpatterns = [
     path('assistants/<str:pk>', views.view_assistant, name='assistants'),
     
     path('treatments/', views.view_treatments, name='treatments'),
+    path('treatments/<str:pk>', views.view_treatment, name='treatments'),
+    
     
     path('patients/', views.view_patients, name='patients'),
     path('patients/<str:pk>', views.view_patient, name='patients'),

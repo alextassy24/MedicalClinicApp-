@@ -5,12 +5,12 @@
 			{% if request.user.is_authenticated %}
 			<ul class="navbar-nav">
 
-					{% if profile and profile.role == "general manager" %}
+					{% if profile and profile.role == "general_manager" %}
 						<li class="nav-item">
 							<a class="nav-link fw-bold" href="{% url 'doctors' %}">Doctors</a>
 						</li>
 					{% endif %}
-					{% if profile.role == "doctor" or "general manager" and profile %}
+					{% if profile.role == "doctor" or "general_manager" and profile %}
 						<li class="nav-item">
 							<a class="nav-link fw-bold" href="{% url 'assistants' %}">Assistants</a>
 						</li>

@@ -2,14 +2,14 @@
 {% block title %}Home{% endblock title %} 
 {% block content %}
 
-<div class="mt-3 text-center">
+<div class="mt-5 text-center">
     {% if request.user.is_authenticated %}
         {% if profile.role == 'doctor'%}
-            <h1>Welcome dr. {{request.user.username}}</h1>
+            <h1>Welcome dr. {{request.user.first_name}} {{request.user.last_name}}</h1>
         {% elif profile.role == 'general_manager'%}
-            <h1>Welcome GM {{request.user.username}}</h1>
+            <h1>Welcome GM {{request.user.first_name}} {{request.user.last_name}}</h1>
         {% else %}
-            <h1>Welcome {{request.user.username}}</h1>
+            <h1>Welcome as. {{request.user.username}}</h1>
         {% endif %}
     {% else %}
         <h1>Welcome Guest</h1>

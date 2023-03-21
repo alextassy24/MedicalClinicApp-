@@ -3,14 +3,15 @@
 {% block title %}Patients{% endblock title %}{% block content %}
   <div class="mb-5 mt-3">
     {% if request.user.is_authenticated %}
-    <h1 class="text-center">Patients Update</h1>
+    <h1 class="text-center">Patients Delete</h1>
   </div>
   <div class="form mb-2">
-    {% if profile and profile.role == "general_manager" or "doctor" %}
+    {% if profile and profile.role == "general_manager" %}
         <form action="" method="POST">
             {% csrf_token %}
-            {{form|crispy}}
-            <button type="submit" class="btn btn-primary">Update</button>
+            <p>Are you sure you want to delete patient: <span class="fw-bold">{{patient.first_name}} {{ patient.last_name}}</span>?</p>
+            <button type="submit" class="btn btn-success">Yes</button>
+            <a class="btn btn-danger" href="{% url 'patients' %}">No</a>
         </form>
     {% else %}
           <div class="mt-5">

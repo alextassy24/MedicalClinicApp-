@@ -1,9 +1,7 @@
 {% extends 'main.html' %} 
 {% block title %}Assistant{% endblock title %} 
 {% block content %}
-
 <div class="mt-5">
-    
     {% if request.user.is_authenticated %}
         {% if profile and profile.role == "general_manager" or "doctor" %}
             <h1 class="text-center mt-3 mb-5">Assistant {{assistant.first_name}}</h1>
@@ -18,8 +16,6 @@
 
            <label for="email" class="form-label">Email</label>
            <input class="form-control mb-3s" name="email" type="text" value="{{assistant.email}}" aria-label="Disabled input example" disabled readonly>
-
-           
         {% else %}
             <div class="mt-5">
                 <h1 class="text-danger">You don't have access this page!</h1>

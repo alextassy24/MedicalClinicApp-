@@ -7,7 +7,7 @@
         {% if profile.role == "general_manager" or "doctor" and profile %}
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="text-center mt-3 mb-1">Patients</h1>
-            <a class="btn btn-info mt-3 mb-1" href="{% url 'patients-register' %}">Add patient</a>
+            <a class="btn btn-success mt-3 mb-1" href="{% url 'patients-register' %}">Add patient</a>
           </div>
           <table class="table table-striped table-hover">
               <thead>
@@ -28,8 +28,8 @@
                     <td>{{patient.email}}</td>
                     <td>
                       <a class ="btn btn-primary" href="{% url 'patients' patient.id %}"><i class="fa-sharp fa-solid fa-eye"></i></a>
-                      <a class ="btn btn-danger" href=""><i class="fa-regular fa-square-minus"></i></a>
-                      <a class ="btn btn-secondary" href=""><i class="fa-solid fa-pen-to-square"></i></a>
+                      <a class ="btn btn-danger" href="{% url 'patients-delete' patient.id %}"><i class="fa-regular fa-square-minus"></i></a>
+                      <a class ="btn btn-secondary" href="{% url 'patients-update' patient.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
                   </tr>
                   {% endfor %}

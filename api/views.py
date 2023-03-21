@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Assistant, UserProfile, Patient, Treatment, RoleChoices
-from .forms import AssistantForm, PatientForm, DoctorForm
+from .forms import AssistantForm, PatientForm, DoctorForm, AssistantUpdateForm, PatientUpdateForm, DoctorUpdateForm, TreatmentForm, TreatmentUpdateForm
 
 def home(request): 
     return render(request, 'home.html')
@@ -96,7 +96,25 @@ def doctor_register(request):
     return render(request, 'doctor_register.html', {'form': form})
 
 def doctor_update(request,pk):
-    pass
+    doctor = User.objects.get(id=pk)
+    form = DoctorUpdateForm(instance=doctor)
+    if request.method == 'POST':
+        doctor.first_name = request.POST.get('first_name')
+        doctor.first_name = request.POST.get('first_name')
+        doctor.email = request.POST.get('email')
+        doctor.save()
+        return redirect('doctors')
+    
+    context = {'form': form}
+    return render(request, 'update_doctor.html',context)
+
+def doctor_delete(request,pk):
+    doctor = User.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        doctor.delete()
+        return redirect('doctors')        
+    return render(request,'delete_doctor.html',{'doctor':doctor})
 
 def assistant_register(request):
     form = AssistantForm()
@@ -115,7 +133,25 @@ def assistant_register(request):
     return render(request, 'assistant_register.html', {'form': form})
 
 def assistant_update(request,pk):
-    pass
+    assistant = Assistant.objects.get(id=pk)
+    form = DoctorUpdateForm(instance=assistant)
+    if request.method == 'POST':
+        assistant.first_name = request.POST.get('first_name')
+        assistant.first_name = request.POST.get('first_name')
+        assistant.email = request.POST.get('email')
+        assistant.save()
+        return redirect('assistants')
+    
+    context = {'form': form}
+    return render(request, 'update_assistant.html',context)
+
+def assistant_delete(request,pk):
+    assistant = Assistant.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        assistant.delete()
+        return redirect('assistants')        
+    return render(request,'delete_assistant.html',{'assistant':assistant})
 
 def patient_register(request):
     form = PatientForm()
@@ -133,4 +169,58 @@ def patient_register(request):
     return render(request, 'patient_register.html', {'form': form})
 
 def patient_update(request,pk):
-    pass
+    patient = Patient.objects.get(id=pk)
+    form = DoctorUpdateForm(instance=patient)
+    if request.method == 'POST':
+        patient.first_name = request.POST.get('first_name')
+        patient.first_name = request.POST.get('first_name')
+        patient.email = request.POST.get('email')
+        patient.save()
+        return redirect('patients')
+    
+    context = {'form': form}
+    return render(request, 'update_patient.html',context)
+
+def patient_delete(request,pk):
+    patient = Patient.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        patient.delete()
+        return redirect('patients')        
+    return render(request,'delete_patient.html',{'patient':patient})
+
+def treatment_register(request):
+    form = TreatmentForm()
+
+    if request.method == 'POST':
+        form = TreatmentForm(request.POST)
+        if form.is_valid():
+            treatment = form.save(commit=False)
+            treatment.save()
+            
+            return redirect('treatments')
+        else:
+            messages.error(request, 'An error occurred during registration')
+
+    return render(request, 'treatment_register.html', {'form': form})
+
+def treatment_update(request, pk):
+    treatment = Treatment.objects.get(id=pk)
+    form = TreatmentUpdateForm(instance=treatment)
+    if request.method == 'POST':
+        treatment.name = request.POST.get('name')
+        treatment.description = request.POST.get('description')
+        treatment.patient = request.POST.get('patient')
+        treatment.save()
+        return redirect('treatments')
+    
+    context = {'form': form}
+    return render(request, 'update_treatment.html',context)
+
+def treatment_delete(request, pk):
+    treatment = Treatment.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        treatment.delete()
+        return redirect('treatments')        
+    return render(request,'delete_treatment.html',{'treatment':treatment})

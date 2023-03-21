@@ -1,16 +1,17 @@
 {% extends 'main.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Patients{% endblock title %}{% block content %}
+{% block title %}Assistants{% endblock title %}{% block content %}
   <div class="mb-5 mt-3">
     {% if request.user.is_authenticated %}
-    <h1 class="text-center">Patients Update</h1>
+    <h1 class="text-center">Assistants Delete</h1>
   </div>
   <div class="form mb-2">
-    {% if profile and profile.role == "general_manager" or "doctor" %}
+    {% if profile and profile.role == "general_manager" %}
         <form action="" method="POST">
             {% csrf_token %}
-            {{form|crispy}}
-            <button type="submit" class="btn btn-primary">Update</button>
+            <p>Are you sure you want to delete assistant: <span class="fw-bold">{{assistant.first_name}} {{ assistant.last_name}}</span>?</p>
+            <button type="submit" class="btn btn-success">Yes</button>
+            <a class="btn btn-danger" href="{% url 'assistants' %}">No</a>
         </form>
     {% else %}
           <div class="mt-5">

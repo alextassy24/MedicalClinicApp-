@@ -20,6 +20,9 @@ class Assistant(User):
         if not self.pk:
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
+        for patient in self.patients.all():
+            patient.assistants.add(self)
+            patient.save()
     
     class Meta:
         verbose_name_plural = "Assistants"

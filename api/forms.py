@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from .models import Assistant, Patient, Treatment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -24,11 +25,22 @@ class AssistantUpdateForm(ModelForm):
         fields = ['first_name', 'last_name', 'email']
         
 class PatientForm(ModelForm):
+    assistants = forms.ModelMultipleChoiceField(
+        queryset=Assistant.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
     class Meta:
         model = Patient
-        fields = '__all__' 
+        fields = '__all__'
         
 class PatientUpdateForm(ModelForm):
+    assistants = forms.ModelMultipleChoiceField(
+        queryset=Assistant.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
     class Meta:
         model = Patient
         fields = '__all__' 

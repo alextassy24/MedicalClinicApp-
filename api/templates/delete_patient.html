@@ -6,7 +6,7 @@
     <h1 class="text-center">Patients Delete</h1>
   </div>
   <div class="form mb-2">
-    {% if profile and profile.role == "general_manager" %}
+    {% if profile.role == "general_manager" or "doctor" and profile%}
         <form action="" method="POST">
             {% csrf_token %}
             <p>Are you sure you want to delete patient: <span class="fw-bold">{{patient.first_name}} {{ patient.last_name}}</span>?</p>

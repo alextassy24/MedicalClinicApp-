@@ -16,6 +16,20 @@
 
            <label for="email" class="form-label">Email</label>
            <input class="form-control mb-3s" name="email" type="text" value="{{assistant.email}}" aria-label="Disabled input example" disabled readonly>
+
+           <h2 class="mt-5">Patients</h2>
+            {% if patients %}
+            <ul>
+            {% for patient in patients %}
+            <li>
+                <h3>{{patient.first_name}} {{patient.last_name}}</h3>
+                <p>Email: {{patient.email}}</p>
+            </li>
+            {% endfor %}
+            </ul>
+            {% else %}
+            <p>No patients found for this assistant.</p>
+            {% endif %}
         {% else %}
             <div class="mt-5">
                 <h1 class="text-danger">You don't have access this page!</h1>

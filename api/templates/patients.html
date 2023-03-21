@@ -16,6 +16,7 @@
                     <th scope="col">First name</th>
                     <th scope="col">Last name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Assistants</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -26,6 +27,12 @@
                     <td>{{patient.first_name}}</td>
                     <td>{{patient.last_name}}</td>
                     <td>{{patient.email}}</td>
+                    <td>
+                      {% for assistant in patient.assistants.all %}
+                        {{ assistant.first_name }} {{ assistant.last_name }}
+                        {% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                    </td>
                     <td>
                       <a class ="btn btn-primary" href="{% url 'patients' patient.id %}"><i class="fa-sharp fa-solid fa-eye"></i></a>
                       <a class ="btn btn-danger" href="{% url 'patients-delete' patient.id %}"><i class="fa-regular fa-square-minus"></i></a>

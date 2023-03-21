@@ -54,7 +54,8 @@ def view_assistants(request):
 
 def view_assistant(request, pk):
     assistant = Assistant.objects.get(id=pk)
-    context = {'assistant': assistant}
+    patients = assistant.patients.all()
+    context = {'assistant': assistant, 'patients': patients}
     return render(request, 'assistant.html', context)
 
 def view_patients(request):
@@ -64,7 +65,8 @@ def view_patients(request):
 
 def view_patient(request, pk):
     patient = Patient.objects.get(id=pk)
-    context = {'patient': patient}
+    assistants = patient.assistants.all()
+    context = {'patient': patient, 'assistants':assistants}
     return render(request, 'patient.html', context)
 
 def view_treatments(request):
@@ -97,14 +99,13 @@ def doctor_register(request):
 
 def doctor_update(request,pk):
     doctor = User.objects.get(id=pk)
-    form = DoctorUpdateForm(instance=doctor)
     if request.method == 'POST':
-        doctor.first_name = request.POST.get('first_name')
-        doctor.first_name = request.POST.get('first_name')
-        doctor.email = request.POST.get('email')
-        doctor.save()
-        return redirect('doctors')
-    
+        form = DoctorUpdateForm(instance=doctor)
+        if form.is_valid():
+            doctor = form.save(commit=False)
+            doctor.save()
+            return redirect('doctors')
+
     context = {'form': form}
     return render(request, 'update_doctor.html',context)
 
@@ -134,13 +135,12 @@ def assistant_register(request):
 
 def assistant_update(request,pk):
     assistant = Assistant.objects.get(id=pk)
-    form = DoctorUpdateForm(instance=assistant)
     if request.method == 'POST':
-        assistant.first_name = request.POST.get('first_name')
-        assistant.first_name = request.POST.get('first_name')
-        assistant.email = request.POST.get('email')
-        assistant.save()
-        return redirect('assistants')
+        form = AssistantUpdateForm(instance=assistant)
+        if form.is_valid():
+            assistant = form.save(commit=False)
+            assistant.save()
+            return redirect('assistants')
     
     context = {'form': form}
     return render(request, 'update_assistant.html',context)
@@ -161,7 +161,9 @@ def patient_register(request):
         if form.is_valid():
             patient = form.save(commit=False)
             patient.save()
-            
+            assistants = form.cleaned_data['assistants']
+            for assistant in assistants:
+                patient.assistants.add(assistant)
             return redirect('patients')
         else:
             messages.error(request, 'An error occurred during registration')
@@ -170,16 +172,21 @@ def patient_register(request):
 
 def patient_update(request,pk):
     patient = Patient.objects.get(id=pk)
-    form = DoctorUpdateForm(instance=patient)
     if request.method == 'POST':
-        patient.first_name = request.POST.get('first_name')
-        patient.first_name = request.POST.get('first_name')
-        patient.email = request.POST.get('email')
-        patient.save()
-        return redirect('patients')
+        form = PatientUpdateForm(request.POST, instance=patient)
+        if form.is_valid():
+            patient = form.save(commit=False)
+            assistants = request.POST.getlist('assistants')
+            patient.assistants.set(assistants)
+            patient.save()
+            return redirect('patients')
+        else:
+            print(form.errors) # add this line to print out any form errors
+    else:
+        form = PatientUpdateForm(instance=patient)
     
     context = {'form': form}
-    return render(request, 'update_patient.html',context)
+    return render(request, 'update_patient.html', context)
 
 def patient_delete(request,pk):
     patient = Patient.objects.get(id=pk)
@@ -206,13 +213,12 @@ def treatment_register(request):
 
 def treatment_update(request, pk):
     treatment = Treatment.objects.get(id=pk)
-    form = TreatmentUpdateForm(instance=treatment)
     if request.method == 'POST':
-        treatment.name = request.POST.get('name')
-        treatment.description = request.POST.get('description')
-        treatment.patient = request.POST.get('patient')
-        treatment.save()
-        return redirect('treatments')
+        form = TreatmentUpdateForm(instance=treatment)
+        if form.is_valid():
+            treatment = form.save(commit=False)
+            treatment.save()
+            return redirect('treatments')
     
     context = {'form': form}
     return render(request, 'update_treatment.html',context)

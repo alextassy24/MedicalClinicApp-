@@ -18,6 +18,7 @@
                     <th scope="col">First name</th>
                     <th scope="col">Last name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Patients</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -28,6 +29,12 @@
                     <td>{{assistant.first_name}}</td>
                     <td>{{assistant.last_name}}</td>
                     <td>{{assistant.email}}</td>
+                    <td>
+                      {% for patient in assistent.patients.all %}
+                      {{ patient.first_name }} {{ patient.last_name }}
+                      {% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                    </td>
                     <td>
                       <a class ="btn btn-primary" href="{% url 'assistants' assistant.id %}"><i class="fa-sharp fa-solid fa-eye"></i></a>
                       {% if profile.role == "general_manager" %}

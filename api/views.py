@@ -133,17 +133,23 @@ def assistant_register(request):
 
     return render(request, 'assistant_register.html', {'form': form})
 
-def assistant_update(request,pk):
+def assistant_update(request, pk):
     assistant = Assistant.objects.get(id=pk)
     if request.method == 'POST':
-        form = AssistantUpdateForm(instance=assistant)
+        form = AssistantUpdateForm(request.POST, instance=assistant)
         if form.is_valid():
             assistant = form.save(commit=False)
+            patients = request.POST.getlist('patients')
+            assistant.patients.set(patients)
             assistant.save()
             return redirect('assistants')
-    
+        else:
+            print(form.errors)
+    else:
+        form = AssistantUpdateForm(instance=assistant, initial={'patients': assistant.patients.all()})
+        
     context = {'form': form}
-    return render(request, 'update_assistant.html',context)
+    return render(request, 'update_assistant.html', context)
 
 def assistant_delete(request,pk):
     assistant = Assistant.objects.get(id=pk)

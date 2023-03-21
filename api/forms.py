@@ -20,6 +20,11 @@ class AssistantForm(UserCreationForm):
         fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2']
         
 class AssistantUpdateForm(ModelForm):
+    patients = forms.ModelMultipleChoiceField(
+        queryset=Patient.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
